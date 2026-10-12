@@ -1,0 +1,16 @@
+.lake/
+*.olean
+*.ilean
+*.olean.private
+*.olean.server
+*.o
+__pycache__/
+verification/local/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk
+.DS_Store
+Thumbs.db

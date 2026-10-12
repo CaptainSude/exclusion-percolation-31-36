@@ -1,0 +1,511 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[colorlinks=true,allcolors=blue,breaklinks=true]{hyperref}
+\Urlmuskip=0mu plus 1mu
+\hypersetup{pdftitle={Exceptional times for nearest-neighbor exclusion percolation on the triangular lattice have Hausdorff dimension 31/36},pdfauthor={}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\T}{\mathbb T}
+\newcommand{\R}{\mathbb R}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\TV}{\mathrm{TV}}
+\newcommand{\dimH}{\dim_{\mathrm H}}
+\title{Exceptional times for nearest-neighbor exclusion percolation on the triangular lattice have Hausdorff dimension $31/36$}
+\author{}
+\date{}
+\makeatletter
+\renewcommand{\maketitle}{\begin{center}{\Large\bfseries\@title\par}\end{center}\vspace{0.5em}}
+\makeatother
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove the $31/36$ exceptional-time theorem for
+nearest-neighbor exclusion percolation on the triangular lattice. The
+proof compares two-time crossing probabilities for conservative dimer
+updates and independent refresh, using a local reference response to
+normalize time. A forest estimate controls every degree of the expansion;
+a sewing argument identifies each fixed degree. The resulting annular
+mixing estimate gives the energy bound needed for exceptional times.
+A Lean formalization accompanies the proof.
+\end{abstract}
+
+\section{The question and the statement}
+
+Identify the triangular lattice with
+$\T=\{m+n e^{i\pi/3}:m,n\in\mathbb Z\}$, with edges between points at
+distance one. Initially, sites are independently black or white with
+probability $1/2$. Each unordered edge has an independent rate-one Poisson
+clock; when it rings, its two endpoint colors are exchanged. Write
+$\omega_t$ for the configuration and
+\[
+ \mathcal E=\{t\geq0:\omega_t\text{ has an infinite black cluster}\}.
+\]
+At every deterministic time the configuration is critical Bernoulli
+percolation, so it has no infinite cluster almost surely. The question
+concerns the random set $\mathcal E$.
+
+Broman, Garban and Steif asked whether conservative percolation has
+exceptional times \cite[Section 9.4]{BGS}. Garban and Vanneuville later
+formulated the dimension-$31/36$ conjecture for symmetric exclusion
+dynamics \cite[Conjecture 1.7]{GV}; it appears in their May 2016 preprint.
+Nearest-neighbor exchanges are a principal case of that conjecture.
+For independent dynamical percolation the dimension is $31/36$
+\cite[Theorem 1.4(1)]{GPSspectral}, while the exclusion upper bound is already known
+\cite[Proposition 3.3]{GV}. We prove the nearest-neighbor case on $\T$.
+
+\begin{theorem}\label{thm:main}
+Almost surely, simultaneously for all $0\leq a<b<\infty$,
+\[
+             \dimH\bigl(\mathcal E\cap(a,b)\bigr)=\frac{31}{36}.
+\]
+In particular, every such interval contains exceptional times.
+\end{theorem}
+
+\section{Proof}
+
+\subsection*{1. A local clock and a comparison of finite crossing words}
+
+Put $\varepsilon=2^{-n}$ and
+$a_\varepsilon(r)=\Pp(A_4(r,1))$ on the \emph{same} mesh $\varepsilon$.
+Here $A_4(r,R)$ denotes four disjoint arms of alternating colors between
+the circular cuts at radii $r$ and $R$, using closed-cell paths.
+We use RSW, arm separation and quasi-multiplicativity in
+the forms of \cite[Sections 2.3 and 4, Propositions 15--16]{Nolin},
+with the fixed-shape comparisons of \cite[Section 2]{OAI}.
+
+Fix a sufficiently large microscopic constant $B$. Separate four
+alternating arms at the microscopic cut and at a fixed positive radius.
+Disjoint RSW corridors attach their outer ends to the left and right
+black sides and the upper and lower white sides of
+$Q_0=[-1,1]\times[-1/2,1/2]$. A fixed finite collar routes the inner
+ends around the neighboring pair, leaving its two bits free; finite
+energy pays only a constant factor for its prescribed colors.
+Jordan separation \cite[Section 4.1]{Diestel} excludes bypasses across
+the white connections, so the crossing reads the first free bit for all
+four assignments of the pair. Arm separation and
+quasi-multiplicativity therefore give probability at least
+$c\,a_\varepsilon(B\varepsilon)$, uniformly over a fixed bulk range.
+This is an ordinary one-time attachment estimate.
+
+We also use the ordinary two-source sewing construction of
+\cite[Section 6, Lemmas 6.5--6.6 and the relative many-trial estimate]{OAI}.
+For a fixed finite polygon family and a compact, positively separated
+insertion range, it supplies annular success events invariant under
+source exchange and the relevant inside exchange. Success makes the
+crossings depend on the enclosed colors through a single join bit.
+For two independent ordinary fair fields $\omega,\eta$, the first-point
+failure event $N$ satisfies
+\begin{equation}\label{eq:seam-input}
+ \Pp\bigl(N\cap A_4^{\rm mic}(\omega)\cap A_4^{\rm sq}(\eta)\bigr)
+       \leq\epsilon\,a_\varepsilon(B\varepsilon)a_\varepsilon(h).
+\end{equation}
+The two arm events refer respectively to the microscopic insertion and
+the fixed square. To apply the source estimate, trim their paths to
+buffered graph cuts inside the protected annulus; the resulting arms
+imply the source's probe event. Fixed-shape arm comparisons change its
+normalization only by a constant factor. The relative many-trial bound
+has the form $\rho+C/n$: choose $\rho$ small, fix the microscopic
+enlargement, then choose the finite trial count $n$ large. Next fix $h$
+below those trials and finally take a sufficiently fine mesh. This gives
+\eqref{eq:seam-input}, uniformly on the compact separated location range.
+The reference-square influence is at least
+$c\,a_\varepsilon(h)$, by the specialization of
+\cite[Lemma 6.1]{OAI}, again using the fixed square/circle comparison.
+These estimates apply on the
+triangular lattice as stated in \cite[Sections 2 and 6]{OAI}.
+
+Use integer coordinates on $\T$. For each phase $\sigma\in\{0,1\}$,
+pair $(2m+\sigma,n)$ with $(2m+\sigma+1,n)$. Consider two rate-one
+updates on each pair, independently between pairs:
+$C$ replaces its colors uniformly subject to their black count;
+$M$ chooses an endpoint uniformly and refreshes that bit fairly.
+Thus $C$ keeps or swaps the pair with equal probability, whereas $M$
+is independent site refresh at rate $1/2$.
+
+For $A\in\{C,M\}$, let $S_A(\varepsilon)$ be the expected change
+indicator of the $Q_0$ crossing when one $A$ update is applied to the
+central horizontal pair, with all other colors an ordinary fair field.
+Define
+\begin{equation}\label{eq:clock}
+ J_A(\varepsilon)=\frac{S_A(\varepsilon)}{2\varepsilon^2},
+ \qquad u_A(\varepsilon)=\frac{\varepsilon^2}{S_A(\varepsilon)}.
+\end{equation}
+The attachment estimate and the exact two-bit calculation give
+$S_A\geq c\,a_\varepsilon(B\varepsilon)>0$. The four-arm exponent
+$5/4$ \cite[Theorem 4]{SW} consequently gives, for every
+$0<\eta<3/4$ and all sufficiently small meshes,
+\begin{equation}\label{eq:clock-bound}
+       u_A(\varepsilon)\leq C_\eta\varepsilon^{3/4-\eta}.
+\end{equation}
+Translation of the reference rectangle identifies the response
+at every insertion with this same $S_A$.
+
+Let $F_\varepsilon$ be a Boolean word in the literal closed-cell crossings
+of a fixed finite family of dyadic polygonal quads. Here the quads are
+images of dyadic axis-parallel grid quads under
+$(u,v)\mapsto u+e^{i\pi/3}v$; invariance of domain
+\cite[Theorem 2B.3]{Hatcher} identifies their polygonal interiors. Put
+$q^A_\varepsilon(t)=\Pp(F_\varepsilon(\omega_0)=
+F_\varepsilon(\omega_t)=1)$ for the corresponding matching dynamics.
+
+\begin{lemma}\label{lem:word}
+For each fixed $T>0$ and each phase,
+\begin{equation}\label{eq:word}
+ q^C_\varepsilon(Tu_C(\varepsilon))-
+ q^M_\varepsilon(Tu_M(\varepsilon))\longrightarrow0.
+\end{equation}
+The second term is the independent site-refresh probability at time
+$T\varepsilon^2/(2S_M(\varepsilon))$.
+\end{lemma}
+
+\begin{proof}
+Take a fixed physical box containing every tested quad and cover its
+sites by the matching. The two-time law of one pair has an exact
+expansion
+\[
+ p_A(t)=p_0+t\{w_A+r_A(t)\},\qquad
+ \sum w_A=\sum r_A(t)=0,\quad
+ \|r_A(t)\|_\TV\leq t\quad(0<t\leq1).
+\]
+Here $\|v\|_\TV=\sum_h|v(h)|$ is the full variation norm, and
+$p_0$ is the fair static pair, constant between the two times;
+$w_A$ is the derivative of the actual pair law at zero. Direct
+calculation gives $\|w_C\|_\TV=1/2$ and $\|w_M\|_\TV=1$.
+
+For an unordered selection $S$ of pairs, integrate arbitrary zero-mass
+signed weights $w_x$ at $S$ and the static law elsewhere. The absolute
+value of the resulting kernel is bounded by
+\begin{equation}\label{eq:geometry}
+          G_\varepsilon(S)\prod_{x\in S}\|w_x\|_\TV,
+          \qquad G_\varepsilon(S)\geq0.
+\end{equation}
+Centering forces a local change at every selected pair. Away from the
+quad boundaries this forces four alternating arms; near a side it
+forces the appropriate half-plane arms \cite[Lemma 2.2]{OAI}.
+Record successive mergers of the probe neighborhoods as a rooted
+forest. RSW, arm separation, the four-arm power bounds and the
+half-plane three-arm bound \cite[Theorems 20 and 23(ii)]{Nolin}
+control the disjoint probe costs.
+
+The two quantitative consequences are as follows. Choose a lower
+four-arm power $g\in(5/4,2)$, for example $g=3/2$, and set
+$\beta=1-g/2>0$.
+For some $A<\infty$, uniformly in phase and update rule, eventually
+\emph{for every} $k\geq0$,
+\begin{equation}\label{eq:all-degrees}
+ u_A(\varepsilon)^k\sum_{|S|=k}G_\varepsilon(S)
+       \leq A^k k^{-\beta k},
+\end{equation}
+where the right side is one at $k=0$. The forest integration uses
+the stopping radius $R_k=\min\{R_*,c_*/\sqrt{k}\}$.
+Packing ensures that the microscopic cutoff lies below $R_k$ for
+every nonempty selection; larger degrees have no selections. Counting
+the merge forests and integrating their radial edges gives
+\eqref{eq:all-degrees}, including the selection factorial.
+Moreover, for fixed $k$ the normalized ordered kernels have a uniform
+$L^p$ forest bound for any $p>1$ sufficiently close to one that $gp<2$.
+
+Write $K_A(\varepsilon;\boldsymbol x)$ for the kernel with $k$ raw
+insertions $w_A$. On tuples separated from each other and from the
+polygon frontiers, the sewing estimate gives
+\begin{equation}\label{eq:good}
+ \sup_{\boldsymbol x}
+ \left|\frac{K_C(\varepsilon;\boldsymbol x)}{S_C(\varepsilon)^k}
+       -\frac{K_M(\varepsilon;\boldsymbol x)}{S_M(\varepsilon)^k}\right|
+       \longrightarrow0.
+\end{equation}
+Indeed, hold the other $k-1$ signed insertions fixed and compare the
+distinguished insertion and the translated reference crossing with one
+common forced square. Put $a=a_\varepsilon(B\varepsilon)$ and
+$b=a_\varepsilon(h)$. If $H_h$ is the square kernel and $D_h$ its
+reference response, write $\widehat K_A$ for the kernel with distinguished
+rule $A$ and the other rules unchanged. The two errors are
+$E_A=\widehat K_A D_h-H_h S_A$. The source symmetries and disjoint ordinary
+probes give $|E_A|\leq C_k\epsilon a^k b$. The exact cancellation
+\[
+ D_h(\widehat K_C S_M-\widehat K_M S_C)=S_M E_C-S_C E_M
+\]
+and the bounds $D_h\geq cb$, $ca\leq S_A\leq Ca$ compare the two
+normalized insertions. The extra $k-1$ probe cutoffs are fixed
+independently of the tolerance. Telescoping replaces all $k$ entries.
+For each tolerance one chooses the finite trials, then a sufficiently
+small fixed $h$, and finally sends $\varepsilon$ to zero. The normalized
+microscopic difference is independent of $h$, so this proves
+\eqref{eq:good}.
+
+The degree-$k$ coefficient after clock normalization is exactly
+\begin{equation}\label{eq:coefficient}
+ c_{A,k}(\varepsilon)=\frac{\varepsilon^{2k}}{k!}
+  \sum_{\boldsymbol x\ \mathrm{distinct}}
+       \frac{K_A(\varepsilon;\boldsymbol x)}{S_A(\varepsilon)^k}.
+\end{equation}
+Remove tuples within distance $\delta$ of a collision or a polygon
+frontier. Their scaled counting mass tends to zero with $\delta$;
+the $L^p$ forest bound and H\"older's inequality make their contribution
+uniformly negligible. On the remaining tuples use \eqref{eq:good}.
+Thus $c_{C,k}-c_{M,k}\to0$ for each fixed $k$, including the common
+static degree zero.
+
+Finally, \eqref{eq:geometry} also applies to the centered remainders
+$r_A$. By \eqref{eq:clock-bound}, replacing raw insertions by the
+effective insertions changes each fixed-degree coefficient by $o(1)$.
+Equation \eqref{eq:all-degrees} bounds the degree-$k$ terms at time $T$
+by $(2AT)^k k^{-\beta k}$, a summable sequence. Dominated summation
+therefore proves \eqref{eq:word} for the actual finite product laws,
+including all repeated-update remainders. The identification of $M$
+with site refresh at half its pair time is exact.
+\end{proof}
+
+\subsection*{2. From crossing words to an energy bound}
+
+The dense quad coordinates and arm-event convergence of
+\cite[Definition 2.1, Lemma 2.9 and Corollary 2.10]{GPSpivotal}
+approximate a fixed hexagonal four-arm event in static probability
+by a finite crossing word: first approximate its limiting indicator by
+a finite cylinder, then pass to sufficiently fine meshes. The word is
+fixed before the mesh threshold. Stationarity bounds the error in a
+two-time probability by twice the static error. Apply
+Lemma~\ref{lem:word}, followed by full independent mixing
+\cite[Theorems 1.3(i), 1.4(i) and Remark 1.5, $\gamma=0$]{GHSS}.
+The local independent clock is admissible because
+$S_M(\varepsilon)\leq C\alpha_4(\varepsilon,1)$ by ordinary pivotal
+necessity; hence its site time is at least a fixed multiple of
+$T\varepsilon^2/\alpha_4(\varepsilon,1)$. Same-event independent
+correlations decrease with time by their Fourier expansion, placing
+the local clock in the mixing regime.
+
+The square of the static four-arm probability of an annulus of aspect
+$M$ is at most $CM^{-9/4}$. Choose a sufficiently large dyadic $M$,
+then a sufficiently large fixed $T$, then a sufficiently fine mesh.
+The resulting conservative four-arm bound is at most
+$(2M)^{-17/8}$. Its reference time at lattice scale $s$ is bounded by
+$C_\eta s^{-(3/4-\eta)}$, by \eqref{eq:clock-bound}. Buffered disjoint
+annuli and monotonicity in time iterate this fixed-aspect estimate.
+Dyadic rounding produces a decorrelation length
+\begin{equation}\label{eq:scale}
+       m(t)\leq C_\eta t^{-1/(3/4-\eta)},\qquad 0<t<1,
+\end{equation}
+above which the paired four-arm probes decay with exponent $17/8>2$.
+
+Let $A_R=\{0\leftrightarrow\partial B_R\}$ and
+$\alpha_1(R)=\Pp(A_R)$. For canonical matching dynamics write
+$q_R^C(t)=\Pp(A_R(\omega_0)\cap A_R(\omega_t))$.
+For a wired annular connection from $r$ to $R$, average the exterior
+replicas independently and retain canonical dependence only in a
+buffered middle annulus. Write $q_{\rm mix}$ for this mixed two-time
+probability and $a(r,R)$ for its ordinary one-time mean. Finite-cluster
+boundary separation is used in the form of \cite[Section 5.5]{Grimmett}.
+The exact
+conditional independent-replica representation permits the finite
+Efron--Stein inequality \cite[Proposition 1]{BBLM}. A changed conditional connection
+probability forces a paired four-arm probe. All active cells lie in the
+buffered bulk, and the exponent $17/8=2+1/8$ gives
+\[
+ q_{\rm mix}-a(r,R)^2
+       \leq C\bigl(m(t)/r\bigr)^{1/8}q_{\rm mix}.
+\]
+The duplicated-event Harris inequality and fixed black collars give
+$q^C(W(r,R))\leq c^{-8}q_{\rm mix}$ for the canonical wired event.
+Choose $N$ so that the variance coefficient is at most $1/2$ when
+$r\geq Nm(t)$. Absorption at $r=2Nm(t)$ bounds this canonical
+probability by $2c^{-8}a(r,R)^2$. The disjoint inner and outer matching
+labels and ordinary one-arm quasi-multiplicativity then yield
+\[
+ q_R^C(t)\leq C\,
+       \frac{\alpha_1(R)^2}{\alpha_1(Nm(t))}
+\]
+in the large-radius case; the static bound handles smaller radii.
+The one-arm exponent and quasi-multiplicativity \cite{LSW,Nolin},
+together with \eqref{eq:scale}, give, for every $\zeta>0$,
+\begin{equation}\label{eq:onearm}
+ q_R^C(t)\leq
+ \min\bigl\{\alpha_1(R),\,
+             C_\zeta\alpha_1(R)^2t^{-5/36-\zeta}\bigr\}.
+\end{equation}
+The numerical exponent is
+$(5/48)/(3/4)=5/36$. All finite covers and both matching phases are
+included in these estimates.
+
+\subsection*{3. Nearest-neighbor exclusion and exceptional times}
+
+Let $H_C$ be the positive generator of canonical matching dynamics
+and $H_X$ that of rate-one nearest-neighbor swaps, on a finite edge
+truncation containing the event's matching-closed support. On a matched edge,
+\[
+ I-\Pi=\tfrac12(I-\mathsf{Swap}),
+ \qquad H_X\geq H_C\geq0
+\]
+as quadratic forms. For $0<\gamma<31/36$, choose $\zeta>0$ with
+$\gamma+5/36+\zeta<1$. Equation \eqref{eq:onearm} gives
+\[
+ \sup_R\alpha_1(R)^{-2}
+       \int_0^1t^{-\gamma}q_R^C(t)\dd t<\infty.
+\]
+Fractional resolvent order transfers this bound to exclusion. More
+explicitly, $(I+H_X)^{\gamma-1}\leq(I+H_C)^{\gamma-1}$; the Laplace
+representation, followed by monotonicity of the canonical correlation
+for the tail $t\geq1$, gives
+\begin{equation}\label{eq:energy}
+ \int_0^1t^{-\gamma}q_R^X(t)\dd t
+       \leq(e+1)\int_0^1t^{-\gamma}q_R^C(t)\dd t
+       \leq C_\gamma\alpha_1(R)^2.
+\end{equation}
+Backward-trace stabilization, finite-cylinder convergence
+and Fatou's lemma pass the bound along an edge exhaustion to the
+actual infinite process; the containment threshold may depend on $R$.
+
+On $I=[0,1]$, consider the normalized occupation
+measures
+\[
+       \nu_R(\dd t)=
+       \alpha_1(R)^{-1}\one_{A_R(\omega_t)}\one_I(t)\dd t.
+\]
+Their expected mass is one. Stationarity and \eqref{eq:energy} bound
+their expected $\gamma$-energy uniformly in $R$; energy also bounds
+squared mass on $I$. A second-moment and Markov argument therefore
+gives, with positive probability, a common positive mass lower bound
+and finite energy upper bound for infinitely many radii. Apply the
+compact-set capacity criterion \cite[Lemma 6.2]{SS} to the decreasing
+closures of the arm-time sets. Their intersection has dimension at
+least $\gamma$ on this measurable witness event.
+
+Closing each site's black-time set gives a configuration with an infinite
+cluster at every time in this compact intersection. There are almost
+surely no simultaneous rings of distinct edge clocks. Local path
+regularity shows that this configuration differs from the actual one
+at at most the two endpoints of the edge ringing at that time.
+Finite recoloring preserves existence of some infinite
+cluster on a locally finite graph. Thus the compact intersection consists
+of actual exceptional times, although its clusters need not contain
+the origin.
+
+The product construction from Poisson marks \cite{LP} and graphical
+regularity \cite[Appendix A]{GV} is equivariant under lattice translation
+and has an ergodic unit spatial shift. Saturating the measurable
+positive-probability witness event under this shift upgrades the lower
+bound to probability one. Affine pullback to a time window $a+c[0,1]$,
+$0<c\leq1$, changes the energy bound by at most $c^{\gamma-1}$.
+Intersect over rational $\gamma\in(0,31/36)$ and rational windows;
+inclusion of rational subwindows gives the simultaneous lower bound
+for every real $0\leq a<b$.
+The upper bound follows from \cite[Proposition 3.3]{GV}, after the proved
+constant time change from its normalized rate convention. Hausdorff
+dimension is invariant under that positive linear time change. This
+proves Theorem~\ref{thm:main}.
+
+\paragraph{Formalization.}
+The accompanying Lean 4.34.1 development verifies the argument from
+24 explicit formulations of the cited results, together with positivity
+of the one-arm decay exponent. The literature results and their
+specializations explained above are supplied as hypotheses; the new
+comparison, coefficient limits, forest bounds, clock estimates and
+exceptional-time argument are proved within Lean. The entry point is
+\texttt{exists\_realization\_dimension} in the module
+\texttt{PublishedNearestNeighborDimension}. The complete build checks
+443 source files, with only \texttt{propext}, \texttt{Classical.choice}
+and \texttt{Quot.sound} as transitive axioms. The accompanying archive
+\texttt{nearest-neighbor-31-36-lean.zip} contains the precise input
+formulations, source correspondences and reproducible build record.
+
+\begin{thebibliography}{99}
+\small
+\bibitem{BGS}
+E. I. Broman, C. Garban and J. E. Steif,
+\emph{Exclusion sensitivity of Boolean functions},
+Probab. Theory Relat. Fields \textbf{155} (2013), 621--663.
+\href{https://arxiv.org/abs/1101.1865v1}{arXiv:1101.1865v1} (2011).
+
+\bibitem{GV}
+C. Garban and H. Vanneuville,
+\emph{Exceptional times for percolation under exclusion dynamics},
+Ann. Sci. \'Ec. Norm. Sup\'er. (4) \textbf{52} (2019), 1--57.
+\href{https://arxiv.org/abs/1605.04766v3}{arXiv:1605.04766v3};
+\href{https://doi.org/10.24033/asens.2383}{doi:10.24033/asens.2383}.
+
+\bibitem{GPSspectral}
+C. Garban, G. Pete and O. Schramm,
+\emph{The Fourier spectrum of critical percolation},
+Acta Math. \textbf{205} (2010), 19--104.
+\href{https://arxiv.org/abs/0803.3750v4}{arXiv:0803.3750v4}
+(corrected version, 2013).
+
+\bibitem{Nolin}
+P. Nolin,
+\emph{Near-critical percolation in two dimensions},
+Electron. J. Probab. \textbf{13} (2008), 1562--1623.
+\href{https://arxiv.org/abs/0711.4948v1}{arXiv:0711.4948v1}:
+Propositions 15--16 and Theorems 20 and 23.
+
+\bibitem{LSW}
+G. F. Lawler, O. Schramm and W. Werner,
+\emph{One-arm exponent for critical 2D percolation},
+Electron. J. Probab. \textbf{7} (2002), paper no. 2.
+\href{https://arxiv.org/abs/math/0108211}{arXiv:math/0108211}, Theorem 1.1.
+
+\bibitem{SW}
+S. Smirnov and W. Werner,
+\emph{Critical exponents for two-dimensional percolation},
+Math. Res. Lett. \textbf{8} (2001), 729--744.
+\href{https://arxiv.org/abs/math/0109120v2}{arXiv:math/0109120v2}, Theorem 4.
+
+\bibitem{GPSpivotal}
+C. Garban, G. Pete and O. Schramm,
+\emph{Pivotal, cluster and interface measures for critical planar percolation},
+J. Amer. Math. Soc. \textbf{26} (2013), 939--1024.
+\href{https://arxiv.org/abs/1008.1378v5}{arXiv:1008.1378v5},
+Lemma 2.9 and Corollary 2.10.
+
+\bibitem{GHSS}
+C. Garban, N. Holden, A. Sep\'ulveda and X. Sun,
+\emph{Liouville dynamical percolation},
+Probab. Theory Relat. Fields \textbf{180} (2021), 621--678.
+\href{https://arxiv.org/abs/1905.06940v2}{arXiv:1905.06940v2},
+Theorems 1.3(i), 1.4(i) and Remark 1.5.
+
+\bibitem{OAI}
+OpenAI,
+\emph{From critical crossings to quenched near-critical universality
+in Voronoi percolation}, preprint, 5 October 2026.
+\href{https://github.com/openai/math/tree/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/From-critical-crossings-to-quenched-near-critical-universality-in-Voronoi-percolation-October-5-2026/build/sections}{Pinned source files},
+commit \texttt{adc7f1241b42e322a6451854ab7e4b4c146bf78a},
+Sections 2 and 6.
+
+\bibitem{BBLM}
+S. Boucheron, O. Bousquet, G. Lugosi and P. Massart,
+\emph{Moment inequalities for functions of independent random variables},
+Ann. Probab. \textbf{33} (2005), 514--560.
+\href{https://arxiv.org/abs/math/0503651}{arXiv:math/0503651}, Proposition 1.
+
+\bibitem{SS}
+O. Schramm and J. E. Steif,
+\emph{Quantitative noise sensitivity and exceptional times for percolation},
+Ann. of Math. (2) \textbf{171} (2010), 619--672.
+\href{https://annals.math.princeton.edu/wp-content/uploads/annals-v171-n2-p01-p.pdf}{Published text},
+Lemma 6.2, p. 650.
+
+\bibitem{LP}
+G. Last and M. Penrose,
+\emph{Lectures on the Poisson Process}, Cambridge University Press, 2017.
+\href{https://stoch.math.kit.edu/img/Last/lastpenrose2017.pdf}{Author manuscript},
+Definition 3.1, Theorem 3.6 and Proposition 6.9.
+
+\bibitem{Diestel}
+R. Diestel, \emph{Graph Theory}, 5th ed., Springer, 2017, Section 4.1.
+
+\bibitem{Grimmett}
+G. Grimmett, \emph{Probability on Graphs}, Cambridge University Press, 2010.
+\href{https://www.statslab.cam.ac.uk/~grg/books/USpgs-rev3.pdf}{Author's 2012 revision},
+Section 5.5.
+
+\bibitem{Hatcher}
+A. Hatcher, \emph{Algebraic Topology}, Cambridge University Press, 2002.
+\href{https://pi.math.cornell.edu/~hatcher/AT/ATch2.pdf}{Chapter 2}, Theorem 2B.3.
+\end{thebibliography}
+\end{document}
