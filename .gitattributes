@@ -1,0 +1,15 @@
+# Preserve the exact bytes of the recorded proof and its verification evidence.
+*.lean -text
+lakefile.toml -text
+lake-manifest.json -text
+lean-toolchain -text
+verification/** -text
+paper/*.tex -text
+
+*.pdf binary
+*.zip binary
+*.md text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.yml text eol=lf
+*.bib text eol=lf
